@@ -9,38 +9,129 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TutorialRouteImport } from './routes/tutorial'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AddonsRouteImport } from './routes/addons'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AddonSlugRouteImport } from './routes/addon.$slug'
 
+const TutorialRoute = TutorialRouteImport.update({
+  id: '/tutorial',
+  path: '/tutorial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddonsRoute = AddonsRouteImport.update({
+  id: '/addons',
+  path: '/addons',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AddonSlugRoute = AddonSlugRouteImport.update({
+  id: '/addon/$slug',
+  path: '/addon/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/addons': typeof AddonsRoute
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/tutorial': typeof TutorialRoute
+  '/addon/$slug': typeof AddonSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/addons': typeof AddonsRoute
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/tutorial': typeof TutorialRoute
+  '/addon/$slug': typeof AddonSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/addons': typeof AddonsRoute
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/tutorial': typeof TutorialRoute
+  '/addon/$slug': typeof AddonSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/addons'
+    | '/auth'
+    | '/categories'
+    | '/tutorial'
+    | '/addon/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/addons' | '/auth' | '/categories' | '/tutorial' | '/addon/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/addons'
+    | '/auth'
+    | '/categories'
+    | '/tutorial'
+    | '/addon/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AddonsRoute: typeof AddonsRoute
+  AuthRoute: typeof AuthRoute
+  CategoriesRoute: typeof CategoriesRoute
+  TutorialRoute: typeof TutorialRoute
+  AddonSlugRoute: typeof AddonSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tutorial': {
+      id: '/tutorial'
+      path: '/tutorial'
+      fullPath: '/tutorial'
+      preLoaderRoute: typeof TutorialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/addons': {
+      id: '/addons'
+      path: '/addons'
+      fullPath: '/addons'
+      preLoaderRoute: typeof AddonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +139,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/addon/$slug': {
+      id: '/addon/$slug'
+      path: '/addon/$slug'
+      fullPath: '/addon/$slug'
+      preLoaderRoute: typeof AddonSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AddonsRoute: AddonsRoute,
+  AuthRoute: AuthRoute,
+  CategoriesRoute: CategoriesRoute,
+  TutorialRoute: TutorialRoute,
+  AddonSlugRoute: AddonSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
