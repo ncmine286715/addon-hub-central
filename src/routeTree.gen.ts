@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TutorialRouteImport } from './routes/tutorial'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AddonsRouteImport } from './routes/addons'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AddonSlugRouteImport } from './routes/addon.$slug'
@@ -29,6 +30,11 @@ const CategoriesRoute = CategoriesRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddonsRoute = AddonsRouteImport.update({
@@ -50,6 +56,7 @@ const AddonSlugRoute = AddonSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/addons': typeof AddonsRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
   '/tutorial': typeof TutorialRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/addons': typeof AddonsRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
   '/tutorial': typeof TutorialRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/addons': typeof AddonsRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
   '/tutorial': typeof TutorialRoute
@@ -77,16 +86,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/addons'
+    | '/admin'
     | '/auth'
     | '/categories'
     | '/tutorial'
     | '/addon/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/addons' | '/auth' | '/categories' | '/tutorial' | '/addon/$slug'
+  to:
+    | '/'
+    | '/addons'
+    | '/admin'
+    | '/auth'
+    | '/categories'
+    | '/tutorial'
+    | '/addon/$slug'
   id:
     | '__root__'
     | '/'
     | '/addons'
+    | '/admin'
     | '/auth'
     | '/categories'
     | '/tutorial'
@@ -96,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AddonsRoute: typeof AddonsRoute
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   CategoriesRoute: typeof CategoriesRoute
   TutorialRoute: typeof TutorialRoute
@@ -125,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/addons': {
       id: '/addons'
       path: '/addons'
@@ -152,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddonsRoute: AddonsRoute,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   CategoriesRoute: CategoriesRoute,
   TutorialRoute: TutorialRoute,
