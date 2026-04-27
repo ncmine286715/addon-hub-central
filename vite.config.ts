@@ -4,7 +4,6 @@ export default defineConfig({
   vite: {
     define: {
       "process.env": "{}",
-      "process.browser": "false",
     },
     ssr: {
       target: "webworker",
@@ -21,6 +20,6 @@ export default defineConfig({
     },
     optimizeDeps: {
       include: ["react", "react-dom"],
-    }
-  }
+    },
+  },
 });
