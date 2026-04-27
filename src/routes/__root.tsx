@@ -1,24 +1,25 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-
+import { Outlet, createRootRoute, HeadContent, Scripts, Link } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { InAppBrowserBanner } from "@/components/InAppBrowserBanner";
+import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <p className="font-pixel text-5xl text-primary text-glow mb-4">404</p>
+        <h2 className="text-xl font-bold mb-2">Página não encontrada</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Esse addon foi minerado e não está mais aqui.
         </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:opacity-90 transition shadow-neon"
+        >
+          Voltar pro início
+        </Link>
       </div>
     </div>
   );
@@ -29,19 +30,23 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "MineAddonsNews — Addons de Minecraft Bedrock por ncmine" },
+      { name: "description", content: "Os melhores addons, texturas e mods para Minecraft Bedrock. Download fácil pelo Terabox. Por ncmine — 140k seguidores no TikTok." },
+      { name: "author", content: "ncmine" },
+      { property: "og:title", content: "MineAddonsNews — Addons de Minecraft por ncmine" },
+      { property: "og:description", content: "Baixe addons de Minecraft Bedrock fácil e rápido pelo Terabox." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:site_name", content: "MineAddonsNews" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#1a2e1a" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap",
       },
     ],
   }),
@@ -52,7 +57,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -65,5 +70,15 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <div className="min-h-screen flex flex-col">
+      <InAppBrowserBanner />
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      <Toaster theme="dark" position="top-center" richColors />
+    </div>
+  );
 }
