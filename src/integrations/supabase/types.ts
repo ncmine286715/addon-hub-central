@@ -14,16 +14,148 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      addons: {
+        Row: {
+          author: string | null
+          category_id: string | null
+          created_at: string
+          downloads: number
+          gallery: Json
+          id: string
+          image_url: string
+          is_featured: boolean
+          is_published: boolean
+          long_description: string | null
+          mc_version: string | null
+          name: string
+          short_description: string
+          slug: string
+          tags: string[]
+          terabox_url: string
+          updated_at: string
+          views: number
+        }
+        Insert: {
+          author?: string | null
+          category_id?: string | null
+          created_at?: string
+          downloads?: number
+          gallery?: Json
+          id?: string
+          image_url: string
+          is_featured?: boolean
+          is_published?: boolean
+          long_description?: string | null
+          mc_version?: string | null
+          name: string
+          short_description: string
+          slug: string
+          tags?: string[]
+          terabox_url: string
+          updated_at?: string
+          views?: number
+        }
+        Update: {
+          author?: string | null
+          category_id?: string | null
+          created_at?: string
+          downloads?: number
+          gallery?: Json
+          id?: string
+          image_url?: string
+          is_featured?: boolean
+          is_published?: boolean
+          long_description?: string | null
+          mc_version?: string | null
+          name?: string
+          short_description?: string
+          slug?: string
+          tags?: string[]
+          terabox_url?: string
+          updated_at?: string
+          views?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "addons_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      increment_addon_downloads: {
+        Args: { addon_slug: string }
+        Returns: undefined
+      }
+      increment_addon_views: {
+        Args: { addon_slug: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +282,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
