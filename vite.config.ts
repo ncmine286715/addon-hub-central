@@ -1,25 +1,23 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { tanstackRouterVite } from "@tanstack/router-plugin";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  vite: {
-    define: {
-      "process.env": "{}",
-    },
-    ssr: {
-      target: "webworker",
-      noExternal: true,
-    },
-    build: {
-      minify: "esbuild",
-      cssMinify: true,
-      rollupOptions: {
-        output: {
-          format: "esm",
-        },
-      },
-    },
-    optimizeDeps: {
-      include: ["react", "react-dom"],
-    },
+  plugins: [
+    tanstackRouterVite(),
+    react(),
+    tsconfigPaths(),
+  ],
+  build: {
+    outDir: "dist",
+    minify: "esbuild",
   },
+  ssr: {
+    noExternal: true,
+    target: "webworker",
+  },
+  define: {
+    "process.env": "{}",
+  }
 });
