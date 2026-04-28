@@ -1,26 +1,15 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { tanstackRouterVite } from "@tanstack/router-plugin";
-import tsconfigPaths from "vite-tsconfig-paths";
-import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [
-    tanstackRouterVite(),
-    react(),
-    tailwindcss(),
-    tsconfigPaths(),
-  ],
-  build: {
-    outDir: "dist",
-    minify: "esbuild",
-    ssr: true,
-  },
-  ssr: {
-    noExternal: true,
-    target: "webworker",
-  },
-  define: {
-    "process.env": "{}",
+  vite: {
+    // Forçamos o build SSR a ser tratado como webworker para o Cloudflare
+    ssr: {
+      target: "webworker",
+      noExternal: true,
+    },
+    // Injetamos um shim básico para process para evitar erros de runtime
+    define: {
+      "process.env": "{}",
+    }
   }
 });
