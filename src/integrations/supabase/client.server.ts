@@ -7,7 +7,7 @@ import type { Database } from './types';
 function getServerEnv(key: string): string | undefined {
   // Cloudflare Workers: env is on globalThis
   if (typeof globalThis !== 'undefined') {
-    const val = (globalThis as Record<string, string>)[key];
+    const val = (globalThis as unknown as Record<string, string>)[key];
     if (val) return val;
   }
   return undefined;
